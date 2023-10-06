@@ -59,7 +59,7 @@ docker-compose up -d
 
 [**Grafana-OSS**](https://hub.docker.com/r/grafana/grafana-oss) / `8.4.3`
 
-[**Mosquitto**](https://hub.docker.com/_/eclipse-mosquitto) / `5`
+[**Mosquitto**](https://hub.docker.com/_/eclipse-mosquitto) / `latest`
 
 [**Python-Paho**](https://hub.docker.com/r/ff114084/python-paho) / `latest`
 
