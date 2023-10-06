@@ -1,12 +1,16 @@
+# Solax PV Monitoring System
 
-![Logo](https://user-images.githubusercontent.com/64506580/159311466-f720a877-6c76-403a-904d-134addbd6a86.png)
+This is a work in progress. Please check back later. The system is already working but some finishing touches are underway before it gets published
 
+# Thanks to
 
-# Telegraf, InfluxDB, Grafana (TIG) Stack
+(https://github.com/huntabyte/tig-stack) which has been used as a base for the infrastructure.
 
-Gain the ability to analyze and monitor telemetry data by deploying the TIG stack within minutes using [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/).
+# Infrastructure Used
 
+Telegraf, InfluxDB, Grafana (aka TIG Stack) plus Mosquitto MQTT server and a Python client application utilizing the [Solax API](https://www.solaxcloud.com/green/user_api/SolaxCloud_User_Monitoring_API_V6.1.pdf) feeding PV system metrics via MQTT into the rest of the stack. A Grafana dashbaord is provided for monitoring.
 
+Deployment is simplified via [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/).
 
 
 ## ⚡️ Getting Started
@@ -54,6 +58,10 @@ docker-compose up -d
 [**InfluxDB**](https://hub.docker.com/_/influxdb) / `2.1.1`
 
 [**Grafana-OSS**](https://hub.docker.com/r/grafana/grafana-oss) / `8.4.3`
+
+[**Mosquitto**](https://hub.docker.com/_/eclipse-mosquitto) / `5`
+
+[**Python-Paho**](https://hub.docker.com/r/ff114084/python-paho) / `latest`
 
 
 
