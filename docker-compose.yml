@@ -1,6 +1,27 @@
 version: "3"
 
 services:
+  paho:
+    image: python-paho
+    restart: on-failure:10
+    volumes:
+      - .:/solar:rw
+    working_dir: /solar
+    environment:
+      - CLIENT_TEST=0
+    entrypoint: ["/solar/client.py"]
+
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    restart: on-failure:10
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mqtt-config:/mosquitto/config:rw
+      - ./mqtt-data:/mosquitto/data:rw
+      - ./mqtt-log:/mosquitto/log:rw
+
   influxdb:
     image: influxdb:2.1.1
     volumes:

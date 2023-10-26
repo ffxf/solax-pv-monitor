@@ -1,0 +1,2681 @@
+{
+    "__inputs": [
+        {
+            "name": "DS_INFLUXDB",
+            "label": "InfluxDB",
+            "description": "",
+            "type": "datasource",
+            "pluginId": "influxdb",
+            "pluginName": "InfluxDB"
+        }
+    ],
+    "__elements": [],
+    "__requires": [
+        {
+            "type": "panel",
+            "id": "barchart",
+            "name": "Bar chart",
+            "version": ""
+        },
+        {
+            "type": "grafana",
+            "id": "grafana",
+            "name": "Grafana",
+            "version": "8.4.3"
+        },
+        {
+            "type": "datasource",
+            "id": "influxdb",
+            "name": "InfluxDB",
+            "version": "1.0.0"
+        },
+        {
+            "type": "panel",
+            "id": "stat",
+            "name": "Stat",
+            "version": ""
+        },
+        {
+            "type": "panel",
+            "id": "table",
+            "name": "Table",
+            "version": ""
+        },
+        {
+            "type": "panel",
+            "id": "timeseries",
+            "name": "Time series",
+            "version": ""
+        }
+    ],
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": null,
+    "iteration": 1698154760432,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 40,
+            "panels": [],
+            "title": "${RowTitleStats}",
+            "type": "row"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 0,
+                "y": 1
+            },
+            "id": 24,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bat_soc\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
+                    "refId": "A"
+                }
+            ],
+            "title": "${BatSOC}",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "watt"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 3,
+                "y": 1
+            },
+            "id": 30,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"sol_pwr\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "${PVPowerCurrent}",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "watt"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 6,
+                "y": 1
+            },
+            "id": 34,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_bat\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "${BatLoadGet}",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "watt"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 9,
+                "y": 1
+            },
+            "id": 25,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ac_power\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
+                    "refId": "A"
+                }
+            ],
+            "title": "${InvPower}",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "watt"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 12,
+                "y": 1
+            },
+            "id": 26,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
+                    "refId": "A"
+                }
+            ],
+            "title": "${GridFeedGet}",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "watt"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 15,
+                "y": 1
+            },
+            "id": 33,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_house\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "${ToHouse}",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "currencyEUR"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 18,
+                "y": 1
+            },
+            "id": 50,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -30y)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] < 0.0)\n  |> multiplyByX(x: -${Cost}/1000.0/60.0)\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\n  |> sum()\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "${GridCostTotal}",
+            "type": "stat"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 4
+            },
+            "id": 38,
+            "panels": [],
+            "title": "${RowTitleFeed}",
+            "type": "row"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "kwatth"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 0,
+                "y": 5
+            },
+            "id": 27,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "hide": false,
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_today\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "${DailyGain}",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "kwatth"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 3,
+                "y": 5
+            },
+            "id": 29,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_total\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "${TotalYield}",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "watth"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 6,
+                "y": 5
+            },
+            "id": 28,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -31d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_today\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: 1mo, fn: sum)",
+                    "refId": "A"
+                }
+            ],
+            "title": "${MonthlyGain}",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "kwatth"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 9,
+                "y": 5
+            },
+            "id": 56,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid_total\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "${ToGridTotal}",
+            "type": "stat"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "currencyEUR"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 3,
+                "x": 12,
+                "y": 5
+            },
+            "id": 51,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "auto"
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -30y)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> multiplyByX(x: ${Gain}/1000.0/60.0)\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\n  |> sum()\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "${TotalGain}",
+            "type": "stat"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 8
+            },
+            "id": 36,
+            "panels": [],
+            "title": "${RowTitleGraphs}",
+            "type": "row"
+        },
+        {
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 14,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "watt"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "sol_pwr telegraf/solar"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${PVYieldTotal}"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "S telegraf/solar"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${PVYieldLine1}"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "W1 telegraf/solar"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${PVYieldLine2}"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "W2 telegraf/solar"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${PVYieldLine3}"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "O telegraf/solar"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${PVYieldLine4}"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 15,
+                "x": 0,
+                "y": 9
+            },
+            "id": 4,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"sol_pwr\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"Leistung gesamt\")",
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "hide": false,
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"S\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+                    "refId": "B"
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "hide": false,
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"W1\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+                    "refId": "C"
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "hide": false,
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"W2\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+                    "refId": "D"
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "hide": false,
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"O\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+                    "refId": "E"
+                }
+            ],
+            "title": "${PVPowerTrend}",
+            "type": "timeseries"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "axisSoftMin": 0,
+                        "fillOpacity": 80,
+                        "gradientMode": "opacity",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "kwatth"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "yield_today telegraf/solar"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${PVYieldPerDay}"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "to_grid_today telegraf/solar"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${ToGrid}"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "mode": "continuous-RdYlGr"
+                                }
+                            },
+                            {
+                                "id": "custom.fillOpacity",
+                                "value": 47
+                            },
+                            {
+                                "id": "unit",
+                                "value": "kwatth"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 9,
+                "x": 15,
+                "y": 9
+            },
+            "id": 16,
+            "options": {
+                "barRadius": 0,
+                "barWidth": 1,
+                "groupWidth": 0.76,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "orientation": "auto",
+                "showValue": "auto",
+                "stacking": "none",
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                },
+                "xTickLabelRotation": -45,
+                "xTickLabelSpacing": 0
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -7d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_today\" or r[\"_field\"] == \"to_grid_today\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: 1d, fn: mean, offset: -121m)\n\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "${DailyYieldVsGridFeed}",
+            "type": "barchart"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-YlRd"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "displayMode": "auto",
+                        "minWidth": 50
+                    },
+                    "decimals": 4,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "currencyEUR"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "to_grid {name=\"to_grid_cost\", topic=\"telegraf/solar\"}"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${CostLabel}"
+                            },
+                            {
+                                "id": "custom.displayMode",
+                                "value": "color-text"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "red",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "to_grid {name=\"to_grid_gain\", topic=\"telegraf/solar\"}"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${GainLabel}"
+                            },
+                            {
+                                "id": "decimals",
+                                "value": 4
+                            },
+                            {
+                                "id": "custom.displayMode",
+                                "value": "color-text"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "green",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Time"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "dateTimeAsLocal"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 8,
+                "x": 0,
+                "y": 20
+            },
+            "id": 55,
+            "options": {
+                "footer": {
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "frameIndex": 0,
+                "showHeader": true,
+                "sortBy": [
+                    {
+                        "desc": true,
+                        "displayName": "Time"
+                    }
+                ]
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -2d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> set(key: \"_measurement\", value: \"to_grid_cost\")\n  |> filter(fn: (r) => r[\"_value\"] < 0.0)\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1h, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: -${Cost}/1000.0/60.0)\n\n",
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "hide": false,
+                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -2d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> set(key: \"_measurement\", value: \"to_grid_gain\")\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1h, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: ${Gain}/1000.0/60.0)\n\n",
+                    "refId": "B"
+                }
+            ],
+            "title": "${HourlyCostGain}",
+            "transformations": [
+                {
+                    "id": "seriesToColumns",
+                    "options": {}
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-YlRd"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "displayMode": "auto",
+                        "minWidth": 50
+                    },
+                    "decimals": 4,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "currencyEUR"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "to_grid {name=\"to_grid_cost\", topic=\"telegraf/solar\"}"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${CostLabel}"
+                            },
+                            {
+                                "id": "custom.displayMode",
+                                "value": "color-text"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "red",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "to_grid {name=\"to_grid_gain\", topic=\"telegraf/solar\"}"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${GainLabel}"
+                            },
+                            {
+                                "id": "decimals",
+                                "value": 4
+                            },
+                            {
+                                "id": "custom.displayMode",
+                                "value": "color-text"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "green",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Time"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "dateTimeAsLocal"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 8,
+                "x": 8,
+                "y": 20
+            },
+            "id": 54,
+            "options": {
+                "footer": {
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "frameIndex": 0,
+                "showHeader": true,
+                "sortBy": [
+                    {
+                        "desc": true,
+                        "displayName": "Time"
+                    }
+                ]
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -14d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> set(key: \"_measurement\", value: \"to_grid_cost\")\n  |> filter(fn: (r) => r[\"_value\"] < 0.0)\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: -${Cost}/1000.0/60.0)\n\n",
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "hide": false,
+                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -14d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> set(key: \"_measurement\", value: \"to_grid_gain\")\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: ${Gain}/1000.0/60.0)\n\n",
+                    "refId": "B"
+                }
+            ],
+            "title": "${DailyCostGain}",
+            "transformations": [
+                {
+                    "id": "seriesToColumns",
+                    "options": {}
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-YlRd"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "displayMode": "auto",
+                        "minWidth": 50
+                    },
+                    "decimals": 4,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "currencyEUR"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "to_grid {name=\"to_grid_cost\", topic=\"telegraf/solar\"}"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${CostLabel}"
+                            },
+                            {
+                                "id": "custom.displayMode",
+                                "value": "color-text"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "red",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "to_grid {name=\"to_grid_gain\", topic=\"telegraf/solar\"}"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${GainLabel}"
+                            },
+                            {
+                                "id": "decimals",
+                                "value": 4
+                            },
+                            {
+                                "id": "custom.displayMode",
+                                "value": "color-text"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "green",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Time"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "dateTimeAsLocal"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 8,
+                "x": 16,
+                "y": 20
+            },
+            "id": 53,
+            "options": {
+                "footer": {
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "frameIndex": 0,
+                "showHeader": true,
+                "sortBy": [
+                    {
+                        "desc": true,
+                        "displayName": "Time"
+                    }
+                ]
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -12mo)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> set(key: \"_measurement\", value: \"to_grid_cost\")\n  |> filter(fn: (r) => r[\"_value\"] < 0.0)\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1mo, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: -${Cost}/1000.0/60.0)\n\n",
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "hide": false,
+                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -12mo)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> set(key: \"_measurement\", value: \"to_grid_gain\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: 1mo, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: ${Gain}/1000.0/60.0)\n\n",
+                    "refId": "B"
+                }
+            ],
+            "title": "${MonthlyCostGain}",
+            "transformations": [
+                {
+                    "id": "seriesToColumns",
+                    "options": {}
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "displayName": "${InvPower}",
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "watt"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 0,
+                "y": 28
+            },
+            "id": 14,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ac_power\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "${InvPower}",
+            "type": "timeseries"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "displayName": "${GridFeedGet}",
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "watt"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 8,
+                "y": 28
+            },
+            "id": 6,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "${GridFeedGet}",
+            "type": "timeseries"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "displayName": "${BatLoadGet}",
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "watt"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 16,
+                "y": 28
+            },
+            "id": 8,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_bat\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "${BatLoadGet}",
+            "type": "timeseries"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "displayName": "${BatSOC}",
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 0,
+                "y": 34
+            },
+            "id": 31,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bat_soc\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "${BatSOC}",
+            "type": "timeseries"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "displayName": "${TotalYield}",
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "kwatth"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 8,
+                "y": 34
+            },
+            "id": 18,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_total\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "${TotalYield}",
+            "type": "timeseries"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "displayName": "${ToGridTotal}",
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "kwatth"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 8,
+                "x": 16,
+                "y": 34
+            },
+            "id": 20,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "${DS_INFLUXDB}"
+                    },
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid_total\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+                    "refId": "A"
+                }
+            ],
+            "title": "${ToGridTotal}",
+            "type": "timeseries"
+        }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 35,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+        "list": [
+            {
+                "current": {
+                    "selected": true,
+                    "text": "0.34",
+                    "value": "0.34"
+                },
+                "description": "Cost per kWh in \u20ac",
+                "hide": 2,
+                "label": "Cost",
+                "name": "Cost",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "0.34",
+                        "value": "0.34"
+                    }
+                ],
+                "query": "0.34",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "0.069",
+                    "value": "0.069"
+                },
+                "description": "Gain from energy feed to grid in \u20ac",
+                "hide": 2,
+                "label": "Gain",
+                "name": "Gain",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "0.069",
+                        "value": "0.069"
+                    }
+                ],
+                "query": "0.069",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Current Status, Consumption and Yield",
+                    "value": "Current Status, Consumption and Yield"
+                },
+                "hide": 2,
+                "name": "RowTitleStats",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Current Status, Consumption and Yield",
+                        "value": "Current Status, Consumption and Yield"
+                    }
+                ],
+                "query": "Current Status, Consumption and Yield",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Yield to Grid",
+                    "value": "Yield to Grid"
+                },
+                "hide": 2,
+                "name": "RowTitleFeed",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Yield to Grid",
+                        "value": "Yield to Grid"
+                    }
+                ],
+                "query": "Yield to Grid",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Trending Graphs",
+                    "value": "Trending Graphs"
+                },
+                "hide": 2,
+                "name": "RowTitleGraphs",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Trending Graphs",
+                        "value": "Trending Graphs"
+                    }
+                ],
+                "query": "Trending Graphs",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Battery SoC",
+                    "value": "Battery SoC"
+                },
+                "hide": 2,
+                "name": "BatSOC",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Battery SoC",
+                        "value": "Battery SoC"
+                    }
+                ],
+                "query": "Battery SoC",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "PV Pwr Current",
+                    "value": "PV Pwr Current"
+                },
+                "hide": 2,
+                "name": "PVPowerCurrent",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "PV Pwr Current",
+                        "value": "PV Pwr Current"
+                    }
+                ],
+                "query": "PV Pwr Current",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Bat. +Load/-Get",
+                    "value": "Bat. +Load/-Get"
+                },
+                "hide": 2,
+                "name": "BatLoadGet",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Bat. +Load/-Get",
+                        "value": "Bat. +Load/-Get"
+                    }
+                ],
+                "query": "Bat. +Load/-Get",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Inverter Power",
+                    "value": "Inverter Power"
+                },
+                "hide": 2,
+                "name": "InvPower",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Inverter Power",
+                        "value": "Inverter Power"
+                    }
+                ],
+                "query": "Inverter Power",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "To Grid +Feed/-Get",
+                    "value": "To Grid +Feed/-Get"
+                },
+                "hide": 2,
+                "name": "GridFeedGet",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "To Grid +Feed/-Get",
+                        "value": "To Grid +Feed/-Get"
+                    }
+                ],
+                "query": "To Grid +Feed/-Get",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "To House",
+                    "value": "To House"
+                },
+                "hide": 2,
+                "name": "ToHouse",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "To House",
+                        "value": "To House"
+                    }
+                ],
+                "query": "To House",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Grid Cost Total",
+                    "value": "Grid Cost Total"
+                },
+                "hide": 2,
+                "name": "GridCostTotal",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Grid Cost Total",
+                        "value": "Grid Cost Total"
+                    }
+                ],
+                "query": "Grid Cost Total",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Daily Yield",
+                    "value": "Daily Yield"
+                },
+                "hide": 2,
+                "name": "DailyGain",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Daily Yield",
+                        "value": "Daily Yield"
+                    }
+                ],
+                "query": "Daily Yield",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Total Gain",
+                    "value": "Total Gain"
+                },
+                "hide": 2,
+                "name": "TotalGain",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Total Gain",
+                        "value": "Total Gain"
+                    }
+                ],
+                "query": "Total Gain",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Monthly Gain",
+                    "value": "Monthly Gain"
+                },
+                "hide": 2,
+                "name": "MonthlyGain",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Monthly Gain",
+                        "value": "Monthly Gain"
+                    }
+                ],
+                "query": "Monthly Gain",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "PV Yield Total",
+                    "value": "PV Yield Total"
+                },
+                "hide": 2,
+                "name": "TotalYield",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "PV Yield Total",
+                        "value": "PV Yield Total"
+                    }
+                ],
+                "query": "PV Yield Total",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Trend PV Power",
+                    "value": "Trend PV Power"
+                },
+                "hide": 2,
+                "name": "PVPowerTrend",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Trend PV Power",
+                        "value": "Trend PV Power"
+                    }
+                ],
+                "query": "Trend PV Power",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Daily PV Yield and Power to Grid",
+                    "value": "Daily PV Yield and Power to Grid"
+                },
+                "hide": 2,
+                "name": "DailyYieldVsGridFeed",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Daily PV Yield and Power to Grid",
+                        "value": "Daily PV Yield and Power to Grid"
+                    }
+                ],
+                "query": "Daily PV Yield and Power to Grid",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "PV Yield Total",
+                    "value": "PV Yield Total"
+                },
+                "hide": 2,
+                "name": "PVYieldTotal",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "PV Yield Total",
+                        "value": "PV Yield Total"
+                    }
+                ],
+                "query": "PV Yield Total",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "PV Array South",
+                    "value": "PV Array South"
+                },
+                "hide": 2,
+                "name": "PVYieldLine1",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "PV Array South",
+                        "value": "PV Array South"
+                    }
+                ],
+                "query": "PV Array South",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "PV Array West 1",
+                    "value": "PV Array West 1"
+                },
+                "hide": 2,
+                "name": "PVYieldLine2",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "PV Array West 1",
+                        "value": "PV Array West 1"
+                    }
+                ],
+                "query": "PV Array West 1",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "PV Array West 2",
+                    "value": "PV Array West 2"
+                },
+                "hide": 2,
+                "name": "PVYieldLine3",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "PV Array West 2",
+                        "value": "PV Array West 2"
+                    }
+                ],
+                "query": "PV Array West 2",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "PV Array East",
+                    "value": "PV Array East"
+                },
+                "hide": 2,
+                "name": "PVYieldLine4",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "PV Array East",
+                        "value": "PV Array East"
+                    }
+                ],
+                "query": "PV Array East",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "PV Yield per Day",
+                    "value": "PV Yield per Day"
+                },
+                "hide": 2,
+                "name": "PVYieldPerDay",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "PV Yield per Day",
+                        "value": "PV Yield per Day"
+                    }
+                ],
+                "query": "PV Yield per Day",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Power to Grid",
+                    "value": "Power to Grid"
+                },
+                "hide": 2,
+                "name": "ToGrid",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Power to Grid",
+                        "value": "Power to Grid"
+                    }
+                ],
+                "query": "Power to Grid",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Hourly Grid Costs / To Grid Gains",
+                    "value": "Hourly Grid Costs / To Grid Gains"
+                },
+                "hide": 2,
+                "name": "HourlyCostGain",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Hourly Grid Costs / To Grid Gains",
+                        "value": "Hourly Grid Costs / To Grid Gains"
+                    }
+                ],
+                "query": "Hourly Grid Costs / To Grid Gains",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Cost",
+                    "value": "Cost"
+                },
+                "hide": 2,
+                "name": "CostLabel",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Cost",
+                        "value": "Cost"
+                    }
+                ],
+                "query": "Cost",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Gains",
+                    "value": "Gains"
+                },
+                "hide": 2,
+                "name": "GainLabel",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Gains",
+                        "value": "Gains"
+                    }
+                ],
+                "query": "Gains",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Daily Grid Costs / To Grid Gains",
+                    "value": "Daily Grid Costs / To Grid Gains"
+                },
+                "hide": 2,
+                "name": "DailyCostGain",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Daily Grid Costs / To Grid Gains",
+                        "value": "Daily Grid Costs / To Grid Gains"
+                    }
+                ],
+                "query": "Daily Grid Costs / To Grid Gains",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "Monthly Grid Costs / To Grid Gains",
+                    "value": "Monthly Grid Costs / To Grid Gains"
+                },
+                "hide": 2,
+                "name": "MonthlyCostGain",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Monthly Grid Costs / To Grid Gains",
+                        "value": "Monthly Grid Costs / To Grid Gains"
+                    }
+                ],
+                "query": "Monthly Grid Costs / To Grid Gains",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "To Grid Total",
+                    "value": "To Grid Total"
+                },
+                "hide": 2,
+                "name": "ToGridTotal",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "To Grid Total",
+                        "value": "To Grid Total"
+                    }
+                ],
+                "query": "To Grid Total",
+                "skipUrlSync": false,
+                "type": "textbox"
+            }
+        ]
+    },
+    "time": {
+        "from": "now-3h",
+        "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Solax PV System",
+    "uid": "MK7d_szIz",
+    "version": 18,
+    "weekStart": ""
+}
