@@ -22,7 +22,7 @@ Telegraf, InfluxDB, Grafana (aka TIG Stack) plus Mosquitto MQTT server and a Pyt
 Deployment is simplified via [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/).
 
 
-## Installation
+# Installation
 
 So far this monitoring system has been tested only under Linux and macOS. Your mileage may vary if you use another platform.
 
@@ -126,7 +126,7 @@ and point your browser to `<ip-of-your-server>:3210` and log into Grafana, initi
 
 You should now be able to see data from your PV system getting displayed in the dashboard.
 
-## Docker Images Used (Official & Verified)
+# Docker Images Used (Official & Verified)
 
 [**Telegraf**](https://hub.docker.com/_/telegraf) / `1.19`
 
@@ -139,7 +139,7 @@ You should now be able to see data from your PV system getting displayed in the 
 [**Python-Paho**](https://hub.docker.com/r/ff114084/python-paho) / `latest`
 
 
-## Troubleshooting
+# Troubleshooting
 
 If you cannot get the docker images pulled when starting the services then you may not have the necessary rights configured. Either change that or pull the containers manually using `sudo` before restarting the services. Before doing so stop the services using
 
@@ -164,7 +164,7 @@ Note that you will need another terminal session to modify things while the syst
 
 To stop the system in this debug mode hit `Ctrl-C` in the terminal with the output and then restart it using the `-d` option again.
 
-## Contributing and ToDo List
+# Contributing and ToDo List
 
 Contributions are always welcome!
 
