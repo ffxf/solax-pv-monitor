@@ -2,6 +2,15 @@
 
 # run with
 # docker run -it --rm --name mdb -v "$PWD":/usr/src/myapp -w /usr/src/myapp python-paho python3 manage_dashb.py
+#
+# A little helper tool to support various languages in the dashboard.
+# Allows to extract visible text label variables from a dashboad json file with their current text label
+# settings and put this into a file in toml format.
+# After modyfing such a toml label mapping file, i.e. translating the text labels, you can use this
+# tool to automatically modify the dashboard json file to represent the desired language. You can
+# then import it into Grafana to get a dashboard with the desired language support.
+#
+# Use the --help / -h option for usage information
 
 from tempfile import mktemp
 from json import load as json_load, dump as json_dump
@@ -11,6 +20,7 @@ from shutil import move
 
 dashb_file = "dashboard.json"
 map_file = "dashb_map.toml"
+
 
 class LabelMap():
     def __init__(self, inf=map_file, outf=map_file):
