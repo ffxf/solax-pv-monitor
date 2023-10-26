@@ -22,9 +22,15 @@ Telegraf, InfluxDB, Grafana (aka TIG Stack) plus Mosquitto MQTT server and a Pyt
 Deployment is simplified via [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/).
 
 
-## Getting Started
+## Installation
 
-Clone the project
+So far this monitoring system has been tested only under Linux and macOS. Your mileage may vary if you use another platform.
+
+You should also have knowledge of how to navigate directories and how to modify files on the OS platform you use. Basic knowledge of Docker is advantageous.
+
+You will need docker and docker-compose installed as a prerequsite. If not available already on the system where you want to run the monitoring services then get Docker from [here](https://www.docker.com/get-started/). It should be feasible to run this also with [podman](https://podman.io/) and [podman-compose](https://docs.podman.io/en/latest/markdown/podman-compose.1.html) but this has not been tested as of yet.
+
+Now clone the project
 
 ```bash
 git clone https://github.com/ffxf/solax-pv-monitor.git
@@ -33,7 +39,7 @@ git clone https://github.com/ffxf/solax-pv-monitor.git
 Navigate to the project directory
 
 ```bash
-cd olax-pv-monitor
+cd solax-pv-monitor
 ```
 
 Change the environment variables defined in `.env` that are used to setup and deploy the stack.
@@ -59,7 +65,38 @@ Also change some settings highlighted in `.client_env` to configure the Solax AP
 ├── entrypoint.sh
 └── ...
 ```
-Finally modify the lines in `.inverter_line_map` to point to your Solax inverters and how you want the PV panel lines be respresented.
+
+In particular, change this line
+
+```bash
+TOKEN = <Solax API token. Get from Solaxcloud. Put in quotes, e.g. "123">
+```
+
+to something like
+
+```bash
+TOKEN = "24346564335464763436464646"
+```
+
+with the value of the token corresponding to what you have obtained from Solaxcloud.
+
+Also change these lines
+
+```bash
+[inverter_sns]
+sn1 = <Inverter serial number. Check network dongle on inverter. E.g. "SYLASDWFG">
+sn2 = <2nd inverter if more than 1>
+# More inverters
+```
+to point to your inverter serial numbers. You can find them on the network dongle plugged into the bottom of your inverter. The Solax API documentation explains what to look for. When done, this section of the file should look similar to this
+
+```bash
+[inverter_sns]
+sn1 = "SYLASDWFG"
+sn2 = "SYPSKFHSR"
+```
+
+Finally modify the lines in `.inverter_line_map` to point to your Solax inverters and how you want the PV panel lines be respresented (if you have more than one you might want to label the by location, e.g., "South", "West", "East", etc).
 
 ```bash
 ├── telegraf/
@@ -71,7 +108,16 @@ Finally modify the lines in `.inverter_line_map` to point to your Solax inverter
 └── ...
 ```
 
-Start the services
+E.g., your file could look like so when done:
+
+```bash
+SYLASDWFG:powerdc1:S
+SYLASDWFG:powerdc2:W1
+SYPSKFHSR:powerdc1:W2
+SYPSKFHSR:powerdc2:E
+```
+
+Now start the services
 ```bash
 docker-compose up -d
 ```
@@ -93,8 +139,42 @@ You should now be able to see data from your PV system getting displayed in the 
 [**Python-Paho**](https://hub.docker.com/r/ff114084/python-paho) / `latest`
 
 
+## Troubleshooting
 
-## Contributing
+If you cannot get the docker images pulled when starting the services then you may not have the necessary rights configured. Either change that or pull the containers manually using `sudo` before restarting the services. Before doing so stop the services using
+
+```bash
+docker-compose stop
+```
+
+If you do not see data getting populated in the dashbaord then it is best to inspect the output of the services. The easiest way to do so is first shutting the services down with
+
+```bash
+docker-compose stop
+```
+and then restart them with
+
+```bash
+docker-compose up
+```
+
+(i.e. **without** the `-d` we have used before). This will not daemonize the services and all output will show up in your terminal. Look for error messages in the output and try to fix the problems being highlighted. Possible reasons can be, for example, that the configuration of the Solax API token is not correct or that the admin token for fluentd is not configured correctly.
+
+Note that you will need another terminal session to modify things while the system is running if not daemonized.
+
+To stop the system in this debug mode hit `Ctrl-C` in the terminal with the output and then restart it using the `-d` option again.
+
+## Contributing and ToDo List
 
 Contributions are always welcome!
+
+Here is a list of some of the things to be done:
+
+* Streamline and simplify the configuration and installation process, perhaps with an installation script
+* Add more documentation, e.g. a better troubleshooting section
+* Test on Windows (get it to work there)
+* Test on a RaspberryPi (get it to work there)
+* Reorganize the source code into some subdirectories
+* Refine and optimize the dashboard (not much expertise with fluxlang and Grafana was available when creating this dashboard)
+* Could also look into getting it to work on top of Kubernetes, e.g. using K3s
 
