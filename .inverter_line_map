@@ -1,5 +1,4 @@
-SYHTEAKBYV:powerdc1:S
-SYHTEAKBYV:powerdc2:W1
-SYPZBTPSZJ:powerdc1:W2
-SYPZBTPSZJ:powerdc2:O
-SYPZBTPSZJ:powerdc3:NA
+<inverter1_sn>:powerdc1:S
+<inverter1_sn>:powerdc2:W1
+<inverter2_sn>:powerdc1:W2
+<inverter2_sn>:powerdc2:O
