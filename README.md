@@ -122,9 +122,15 @@ Now start the services
 docker-compose up -d
 ```
 
-and point your browser to `<ip-of-your-server>:3210` and log into Grafana, initially using the default user name `amin` and password `admin`. Then hover over the `+` icon in the left navigation bar and select `Import`. Now load one of the dashboard JSON files in this directory (`dashboard.json` for German and `dashb_eng.json` for English language support). Be sure you select the default fluentdb data source while doing so.
+and point your browser to `<ip-of-your-server>:3210` and log into Grafana, initially using the default user name `amin` and password `admin`. Then first add FluentDB as a data source via the cog wheel icon on the left navigation bar. The FluentDB data source configuration should look like so:
 
-You should now be able to see data from your PV system getting displayed in the dashboard.
+![](fluxdb-datasrc.png)
+
+In particular, be sure you set the fields with the green arrows to what you see in this screenshot. The token field with the yellow arrow needs to be set to what you have in the `.env` file for the parameter `DOCKER_INFLUXDB_INIT_ADMIN_TOKEN`. Click on `save & test` and you should see a green checkbox and a message saying that 3 buckets have been discovered.
+
+Then hover over the `+` icon in the left navigation bar and select `Import`. Now load one of the dashboard JSON files in this directory (`dashboard.json` for German and `dashb_eng.json` for English language support). Be sure you select the fluentdb data source you have just configured at the bottom.
+
+Once the dashboard is loaded, you should be able to see data from your PV system getting displayed.
 
 # Docker Images Used (Official & Verified)
 

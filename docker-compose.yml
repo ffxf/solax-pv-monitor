@@ -2,7 +2,7 @@ version: "3"
 
 services:
   paho:
-    image: python-paho
+    image: ff114048/python-paho
     restart: on-failure:10
     volumes:
       - .:/solar:rw
