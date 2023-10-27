@@ -147,7 +147,14 @@ If you cannot get the docker images pulled when starting the services then you m
 docker-compose stop
 ```
 
-If you do not see data getting populated in the dashbaord then it is best to inspect the output of the services. The easiest way to do so is first shutting the services down with
+If you do not see data getting populated in the dashbaord then it is best to inspect the output of the services. You can do so either via the command
+
+```bash
+docker-compose logs
+```
+
+or be first halting the services via
+
 
 ```bash
 docker-compose stop
@@ -158,7 +165,9 @@ and then restart them with
 docker-compose up
 ```
 
-(i.e. **without** the `-d` we have used before). This will not daemonize the services and all output will show up in your terminal. Look for error messages in the output and try to fix the problems being highlighted. Possible reasons can be, for example, that the configuration of the Solax API token is not correct or that the admin token for fluentd is not configured correctly.
+(i.e. **without** the `-d` we have used before). This will not daemonize the services and all output will show up in your terminal.
+
+In either case, ook for error messages in the output and try to fix the problems being highlighted. Possible reasons can be, for example, that the configuration of the Solax API token is not correct or that the admin token for fluentd is not configured correctly.
 
 Note that you will need another terminal session to modify things while the system is running if not daemonized.
 
