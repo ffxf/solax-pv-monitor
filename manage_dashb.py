@@ -23,6 +23,9 @@ map_file = "dashb_map.toml"
 
 
 class LabelMap():
+    # Class to handle the simple label map toml format
+    # Provides a function to read a map via read_map() and create a label map from a JSON
+    # dashboard file via get_map_from_dashboard()
     def __init__(self, inf=map_file, outf=map_file):
         self.inf = inf
         self.outf = outf
@@ -34,8 +37,13 @@ class LabelMap():
         return map
 
     def get_map_from_dashboard(self, dashboard):
+        # Creates a map from a Grafana JSON dashboard. The function doesn't parse the complete
+        # JSON file but focuses on variable definitions under 'templating'
         with open(self.outf, "a") as f:
             for rec in dashboard['templating']['list']:
+                # Depending on the type of variable, there is either a 'label' attribute
+                # containing the label test we are looking for or it is in a 'text' attribute
+                # under the 'current' attribute
                 if 'label' in rec:
                     txt = rec['label']
                 elif 'text' in rec['current']:
@@ -43,9 +51,14 @@ class LabelMap():
                 else:
                     print('Neither "label" nor "text" in templating record. Skipping ...')
                     continue
+                # The 'name' attribute contains the name of the variable. So write this out in the
+                # simple format
+                # "<variable name>" = "<label test>"
                 f.write(f"""\042{rec['name']}\042 = \042{txt}\042\n""")
 
 class Dashboard():
+    # Class to handle dashboard manipulations, in particular reading a dashbaord and writing it
+    # while applying a remapping the labels of variables based on a label map
     def __init__(self, dashb_file=dashb_file):
         self.dashb_file = dashb_file
 
@@ -59,6 +72,9 @@ class Dashboard():
         dashboard = self.read_dashb()
 
         for rec in dashboard['templating']['list']:
+            # Also here we need to handle the two types of variable which have the label either in
+            # a 'label' attributed or under 'current/test', 'current/value', 'options[0]/text' and
+            # 'options[0]/value'. In each we have to set our label text from the map
             nm = rec['name']
             if nm not in map:
                 continue
@@ -85,6 +101,8 @@ class Dashboard():
 
 
 def get_args():
+    # CLI arguments. Use the -h or --help option for usage
+
     parser = ArgumentParser(description="""
 Allows to create Grafana dashboard variable label map files and use such files to modify dashboards, e.g. to change
 the language of the labels.""", \
