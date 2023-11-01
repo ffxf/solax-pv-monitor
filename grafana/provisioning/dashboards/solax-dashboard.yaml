@@ -1,0 +1,9 @@
+apiVersion: 1
+
+providers:
+  - name: "Solax_PV_Monitor"
+    folder: ""
+    type: file
+    options:
+      path:
+        /grafana-provisioning/dashboards
