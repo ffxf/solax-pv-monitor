@@ -47,13 +47,14 @@ services:
     volumes:
       - grafana-storage:/var/lib/grafana:rw
       - ./grafana/provisioning:${GF_PATHS_PROVISIONING}:rw
+      - .:/solar:rw
     depends_on:
       - influxdb
     env_file:
       - .env
     ports:
       - ${GRAFANA_PORT}:3000
-    entrypoint: ["${GF_PATHS_PROVISIONING}/graf-ep.sh"]
+    entrypoint: ["/solar/grafana-entrypoint.sh"]
 
 volumes:
   grafana-storage:

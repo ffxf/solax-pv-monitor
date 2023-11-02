@@ -1,5 +1,5 @@
 # Solax PV Monitoring System
-![](solax-monitor.jpg)
+![](images/solax-monitor.jpg)
 
 Note that this is a work in progress.
 
@@ -42,7 +42,7 @@ Navigate to the project directory
 cd solax-pv-monitor
 ```
 
-Change the environment variables defined in `.env` that are used to setup and deploy the stack.
+Change the environment variables defined in `.env` that are used to setup and deploy the stack. For a first test you should be able to leave the values in `.env` as they are, though. For deploying permanently you will at least want to adjust modify the password and token settings, though (see the corresponding comments in the file itself).
 
 ```bash
 ├── telegraf/
@@ -88,6 +88,7 @@ sn1 = <Inverter serial number. Check network dongle on inverter. E.g. "SYLASDWFG
 sn2 = <2nd inverter if more than 1>
 # More inverters
 ```
+
 to point to your inverter serial numbers. You can find them on the network dongle plugged into the bottom of your inverter. The Solax API documentation explains what to look for. When done, this section of the file should look similar to this
 
 ```bash
@@ -96,7 +97,7 @@ sn1 = "SYLASDWFG"
 sn2 = "SYPSKFHSR"
 ```
 
-Finally modify the lines in `.inverter_line_map` to point to your Solax inverters and how you want the PV panel lines be respresented (if you have more than one you might want to label the by location, e.g., "South", "West", "East", etc).
+Finally, modify the lines in `.inverter_line_map` to point to your Solax inverters and how you want the PV panel lines be respresented (if you have more than one you might want to label them by location, e.g., "South", "West", "East", etc).
 
 ```bash
 ├── telegraf/
@@ -122,15 +123,9 @@ Now start the services
 docker-compose up -d
 ```
 
-and point your browser to `<ip-of-your-server>:3210` and log into Grafana, initially using the default user name `amin` and password `admin`. Then first add FluentDB as a data source via the cog wheel icon on the left navigation bar. The FluentDB data source configuration should look like so:
+and point your browser to `<ip-of-your-server>:3210` and log into Grafana, initially using the default user name `amin` and password `admin`. You should see a dashboard now with **NO DATA** in its tiles. Wait for something like a minute (for the first data update) and data should show up in the dashboard.
 
-![](fluxdb-datasrc.png)
-
-In particular, be sure you set the fields with the green arrows to what you see in this screenshot. The token field with the yellow arrow needs to be set to what you have in the `.env` file for the parameter `DOCKER_INFLUXDB_INIT_ADMIN_TOKEN`. Click on `save & test` and you should see a green checkbox and a message saying that 3 buckets have been discovered.
-
-Then hover over the `+` icon in the left navigation bar and select `Import`. Now load one of the dashboard JSON files in this directory (`dashboard.json` for German and `dashb_eng.json` for English language support). Be sure you select the fluentdb data source you have just configured at the bottom.
-
-Once the dashboard is loaded, you should be able to see data from your PV system getting displayed.
+If you do not see a dashboard you can select one from the Grafana home screen or you can search for a dashboard by clicking on the magnifying icon on the left margin navigation bar.
 
 # Docker Images Used (Official & Verified)
 
@@ -153,31 +148,20 @@ If you cannot get the docker images pulled when starting the services then you m
 docker-compose stop
 ```
 
-If you do not see data getting populated in the dashbaord then it is best to inspect the output of the services. You can do so either via the command
+If you do not see data getting populated in the dashbaord then it is best to inspect the output of the services. A good way of doing that is via the command:
 
 ```bash
 docker-compose logs
 ```
 
-or be first halting the services via
+Look for error messages in the output and try to fix the problems being highlighted. Possible reasons can be, for example, that the configuration of the Solax API token is not correct or that the admin token for InfluxDB is not configured correctly.
 
+In the latter case you can check from within Grafana whether InfluxDB is correctly configured as a datasource. In Grafana, click on the cog wheel icon on the left navigation bar and click on the InfluxDB datasource. The data source configuration should look like so:
 
-```bash
-docker-compose stop
-```
-and then restart them with
+![](images/fluxdb-datasrc.png)
 
-```bash
-docker-compose up
-```
+In particular, be sure you set the fields with the green arrows to what you see in this screenshot. The token field with the yellow arrow needs to be set to what you have in the `.env` file for the parameter `DOCKER_INFLUXDB_INIT_ADMIN_TOKEN`. Click on `save & test` and you should see a green checkbox and a message saying that 3 buckets have been discovered.
 
-(i.e. **without** the `-d` we have used before). This will not daemonize the services and all output will show up in your terminal.
-
-In either case, ook for error messages in the output and try to fix the problems being highlighted. Possible reasons can be, for example, that the configuration of the Solax API token is not correct or that the admin token for fluentd is not configured correctly.
-
-Note that you will need another terminal session to modify things while the system is running if not daemonized.
-
-To stop the system in this debug mode hit `Ctrl-C` in the terminal with the output and then restart it using the `-d` option again.
 
 # Contributing and ToDo List
 
