@@ -1,7 +1,11 @@
-# Solax PV Monitor Dashboard Management Utility
+# Solax PV Monitor Utilities
 
-Simple utility to manipulate Solax PV Montiro dashboards if they are modified from within Grafana
-and then exported. Assumes that exporting is donw as a JSON file and with "export externally"
+## Dashboard Management Utility
+
+### Description
+
+Simple utility to manipulate Solax PV Monitor dashboards if they are modified from within Grafana
+and then exported. Assumes that exporting is done as a JSON file and with "export externally"
 turned on.
 
 The utility allows to do the following things:
@@ -21,3 +25,35 @@ docker run -it --rm --name mdb -v "$PWD":/usr/src/myapp -w /usr/src/myapp python
 ```
 
 Supply the `-h` or `--help` option to see usage information.
+
+### Typical Workflow
+
+The typical workflow is as follows
+
+1. Export a modified dashboard from Grafana using the "Export for sharing externally" option and save it to file
+2. Extract a mapping file for the variables used in the dashboard. Use the `-dbi`, `-mapfo` and `-rm` option for this
+3. Modify the mapping file as needed, e.g., translate the text labels into another languate
+4. Create a new dashboard file using the mapping file. Use the `-dbi`, `-dbo`, `-mapfi`, and `-wd` for this
+5. Fix the datasource definitions in the dashboard file that just got created. There is an issue preventing files to get provisioned directly if not doing this. Use the `-dbi`, `-dbo`, and `-fd` options for it
+
+If you not intended to do text label translations or other changes then you can skip steps 2 - 4.
+
+It is possible to use the same name for dashbaord file input and output name (options `-dbi` and `-dbo`).
+
+## Backup and Restore Script
+
+### Description
+
+The `bkup-rest.sh` bash script allows to backup monitoring bucket data from the influxdb container and restore it later. The main intention is to support upgrades of the stack.
+
+Just run `./bkup-rest.sh` to see usage information.
+
+### Workflow
+
+The suggested worflow to upgrade the stack with the help of this script is as follows:
+
+1. Run `./bkup-rest.sh backup`. It will print where it has stored the backup
+2. Shutdown monitoring stack with `docker-compose down -v` (or without the `-v`, potentially, if you have made changes to users, keys, etc in influxdb or grafana, or you have added more buckets)
+3. Update the stack, e.g. do a `docker pull`
+4. Startup the stack via `docker-compose up -d`
+5. Restore data from the backup via `./bkup-rest.sh restore <backup_dir>` with `<backup_dir>` being what has been printed in step #1

@@ -71,7 +71,7 @@
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
     "id": null,
-    "iteration": 1698154760432,
+    "iteration": 1698836318013,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -1116,7 +1116,7 @@
                         "type": "influxdb",
                         "uid": "influxdb"
                     },
-                    "query": "from(bucket: \"telegraf\")\n  |> range(start: -7d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_today\" or r[\"_field\"] == \"to_grid_today\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: 1d, fn: mean, offset: -121m)\n\n",
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -7d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_today\" or r[\"_field\"] == \"to_grid_today\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: 1d, fn: mean, offset: ${TZ_OFFSET})\n\n",
                     "refId": "A"
                 }
             ],
@@ -1247,7 +1247,7 @@
                         "type": "influxdb",
                         "uid": "influxdb"
                     },
-                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -2d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> set(key: \"_measurement\", value: \"to_grid_cost\")\n  |> filter(fn: (r) => r[\"_value\"] < 0.0)\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1h, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: -${Cost}/1000.0/60.0)\n\n",
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nmultiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -2d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> set(key: \"_measurement\", value: \"to_grid_cost\")\n  |> filter(fn: (r) => r[\"_value\"] < 0.0)\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1h, fn: sum, createEmpty: false, offset: ${TZ_OFFSET})\n  |> multiplyByX(x: -${Cost}/1000.0/60.0)\n\n",
                     "refId": "A"
                 },
                 {
@@ -1256,7 +1256,7 @@
                         "uid": "influxdb"
                     },
                     "hide": false,
-                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -2d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> set(key: \"_measurement\", value: \"to_grid_gain\")\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1h, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: ${Gain}/1000.0/60.0)\n\n",
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\n\nmultiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -2d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> set(key: \"_measurement\", value: \"to_grid_gain\")\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1h, fn: sum, createEmpty: false, offset: ${TZ_OFFSET})\n  |> multiplyByX(x: ${Gain}/1000.0/60.0)\n\n",
                     "refId": "B"
                 }
             ],
@@ -1393,7 +1393,7 @@
                         "type": "influxdb",
                         "uid": "influxdb"
                     },
-                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -14d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> set(key: \"_measurement\", value: \"to_grid_cost\")\n  |> filter(fn: (r) => r[\"_value\"] < 0.0)\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: -${Cost}/1000.0/60.0)\n\n",
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nmultiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -14d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> set(key: \"_measurement\", value: \"to_grid_cost\")\n  |> filter(fn: (r) => r[\"_value\"] < 0.0)\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false, offset: ${TZ_OFFSET})\n  |> multiplyByX(x: -${Cost}/1000.0/60.0)\n\n",
                     "refId": "A"
                 },
                 {
@@ -1402,7 +1402,7 @@
                         "uid": "influxdb"
                     },
                     "hide": false,
-                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -14d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> set(key: \"_measurement\", value: \"to_grid_gain\")\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: ${Gain}/1000.0/60.0)\n\n",
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nmultiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -14d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> set(key: \"_measurement\", value: \"to_grid_gain\")\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false, offset: ${TZ_OFFSET})\n  |> multiplyByX(x: ${Gain}/1000.0/60.0)\n\n",
                     "refId": "B"
                 }
             ],
@@ -1539,7 +1539,7 @@
                         "type": "influxdb",
                         "uid": "influxdb"
                     },
-                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -12mo)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> set(key: \"_measurement\", value: \"to_grid_cost\")\n  |> filter(fn: (r) => r[\"_value\"] < 0.0)\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1mo, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: -${Cost}/1000.0/60.0)\n\n",
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nmultiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -12mo)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> set(key: \"_measurement\", value: \"to_grid_cost\")\n  |> filter(fn: (r) => r[\"_value\"] < 0.0)\n  |> drop(columns: [\"host\"])\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1mo, fn: sum, createEmpty: false, offset: ${TZ_OFFSET})\n  |> multiplyByX(x: -${Cost}/1000.0/60.0)\n\n",
                     "refId": "A"
                 },
                 {
@@ -1548,7 +1548,7 @@
                         "uid": "influxdb"
                     },
                     "hide": false,
-                    "query": "multiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -12mo)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> set(key: \"_measurement\", value: \"to_grid_gain\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: 1mo, fn: sum, createEmpty: false, offset: -121m)\n  |> multiplyByX(x: ${Gain}/1000.0/60.0)\n\n",
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nmultiplyByX = (x, tables=<-) => tables\n    |> map(fn: (r) => ({r with _value: r._value * x}))\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -12mo)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"to_grid\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> set(key: \"_measurement\", value: \"to_grid_gain\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: 1mo, fn: sum, createEmpty: false, offset: ${TZ_OFFSET})\n  |> multiplyByX(x: ${Gain}/1000.0/60.0)\n\n",
                     "refId": "B"
                 }
             ],
@@ -2657,12 +2657,32 @@
                 "name": "ToGridTotal",
                 "options": [
                     {
-                        "selected": true,
+                        "selected": false,
                         "text": "To Grid Total",
                         "value": "To Grid Total"
                     }
                 ],
                 "query": "To Grid Total",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "-1m",
+                    "value": "-1m"
+                },
+                "description": "Timezone Offset",
+                "hide": 2,
+                "name": "TZ_OFFSET",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "-1m",
+                        "value": "-1m"
+                    }
+                ],
+                "query": "-1m",
                 "skipUrlSync": false,
                 "type": "textbox"
             }
@@ -2676,6 +2696,6 @@
     "timezone": "",
     "title": "Solax PV Monitor Engl",
     "uid": "MK7d_szI2",
-    "version": 18,
+    "version": 19,
     "weekStart": ""
 }
