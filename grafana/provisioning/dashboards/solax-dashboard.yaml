@@ -4,6 +4,7 @@ providers:
   - name: "Solax_PV_Monitor"
     folder: ""
     type: file
+    allowUiUpdates: true
     options:
       path:
         /grafana-provisioning/dashboards
