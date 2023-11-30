@@ -54,6 +54,6 @@ The suggested worflow to upgrade the stack with the help of this script is as fo
 
 1. Run `./bkup-rest.sh backup`. It will print where it has stored the backup
 2. Shutdown monitoring stack with `docker-compose down -v` (or without the `-v`, potentially, if you have made changes to users, keys, etc in influxdb or grafana, or you have added more buckets)
-3. Update the stack, e.g. do a `docker pull`
+3. Update the stack, e.g. do a `git pull`
 4. Startup the stack via `docker-compose up -d`
 5. Restore data from the backup via `./bkup-rest.sh restore <backup_dir>` with `<backup_dir>` being what has been printed in step #1

@@ -9,7 +9,15 @@
 
 BKUP_BASE=/root
 BKUP_DIR=${2:-backup_$(date '+%Y-%m-%d_%H-%M')}
-BKUP_PATH=${BKUP_BASE}/${BKUP_DIR}
+
+# Removing relative path in backup dir in case the backup directory is not local
+shopt -s extglob           # enable +(...) glob syntax
+BKUP_PATH=${BKUP_DIR%%+(/)}      # trim however many trailing slashes exist
+BKUP_PATH=${BKUP_PATH##*/}       # remove everything before the last / that still remains
+BKUP_PATH=${BKUP_PATH:-/}        # correct for dirname=/ case
+
+# Building backup path for container
+BKUP_PATH=${BKUP_BASE}/${BKUP_PATH}
 
 TOKEN=$(grep TOKEN .env | cut -d = -f 2)
 BUCKET=$(grep BUCKET .env | cut -d = -f 2)

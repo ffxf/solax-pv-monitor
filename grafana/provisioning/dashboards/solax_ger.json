@@ -71,7 +71,7 @@
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
     "id": null,
-    "iteration": 1698836318013,
+    "iteration": 1699290997321,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -2065,6 +2065,170 @@
             ],
             "title": "${ToGridTotal}",
             "type": "timeseries"
+        },
+        {
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "continuous-YlRd"
+                    },
+                    "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "axisSoftMin": 0,
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        }
+                    },
+                    "decimals": 1,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "bat_soc {name=\"median_soc\", topic=\"telegraf/solar\"}"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${MedianSOC}"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "red",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "bat_soc {name=\"max_soc\", topic=\"telegraf/solar\"}"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "${MaxSOC}"
+                            },
+                            {
+                                "id": "decimals",
+                                "value": 4
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "green",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "bat_soc {name=\"min_soc\", topic=\"telegraf/solar\"}"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "percent"
+                            },
+                            {
+                                "id": "displayName",
+                                "value": "${MinSOC}"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 11,
+                "x": 0,
+                "y": 40
+            },
+            "id": 57,
+            "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "groupWidth": 0.7,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom"
+                },
+                "orientation": "auto",
+                "showValue": "auto",
+                "stacking": "none",
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                },
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+            },
+            "pluginVersion": "8.4.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "influxdb"
+                    },
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -12mo)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bat_soc\")\n  |> drop(columns: [\"host\"])\n  |> set(key: \"_measurement\", value: \"median_soc\")\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1d, fn: max, createEmpty: false, offset: ${TZ_OFFSET})\n  |> aggregateWindow(every: 1mo, fn: median, createEmpty: false, offset: ${TZ_OFFSET})\n  |> truncateTimeColumn(unit: 1m)\n\n",
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "influxdb"
+                    },
+                    "hide": false,
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -12mo)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bat_soc\")\n  |> drop(columns: [\"host\"])\n  |> set(key: \"_measurement\", value: \"max_soc\")\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1d, fn: max, createEmpty: false, offset: ${TZ_OFFSET})\n  |> aggregateWindow(every: 1mo, fn: max, createEmpty: false, offset: ${TZ_OFFSET})\n  |> truncateTimeColumn(unit: 1m)\n",
+                    "refId": "B"
+                },
+                {
+                    "datasource": {
+                        "type": "influxdb",
+                        "uid": "influxdb"
+                    },
+                    "hide": false,
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -12mo)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bat_soc\")\n  |> drop(columns: [\"host\"])\n  |> set(key: \"_measurement\", value: \"min_soc\")\n  |> truncateTimeColumn(unit: 1m)\n  |> aggregateWindow(every: 1d, fn: max, createEmpty: false, offset: ${TZ_OFFSET})\n  |> aggregateWindow(every: 1mo, fn: min, createEmpty: false, offset: ${TZ_OFFSET})\n  |> truncateTimeColumn(unit: 1m)\n\n",
+                    "refId": "C"
+                }
+            ],
+            "title": "${MonthlySOCStats}",
+            "transformations": [
+                {
+                    "id": "seriesToColumns",
+                    "options": {}
+                }
+            ],
+            "type": "barchart"
         }
     ],
     "refresh": "10s",
@@ -2075,7 +2239,7 @@
         "list": [
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "0.34",
                     "value": "0.34"
                 },
@@ -2096,7 +2260,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "0.069",
                     "value": "0.069"
                 },
@@ -2117,7 +2281,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Aktueller Status, Verbr\u00e4uche und Erzeugung",
                     "value": "Aktueller Status, Verbr\u00e4uche und Erzeugung"
                 },
@@ -2136,7 +2300,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Einspeisung",
                     "value": "Einspeisung"
                 },
@@ -2155,7 +2319,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Verlaufsgrafiken",
                     "value": "Verlaufsgrafiken"
                 },
@@ -2174,7 +2338,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Batterieladung",
                     "value": "Batterieladung"
                 },
@@ -2193,7 +2357,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "PV Aktuell",
                     "value": "PV Aktuell"
                 },
@@ -2212,7 +2376,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Bat. +Einsp/-Bez.",
                     "value": "Bat. +Einsp/-Bez."
                 },
@@ -2231,7 +2395,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Wechselr. Leistung",
                     "value": "Wechselr. Leistung"
                 },
@@ -2250,7 +2414,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Netz +Einsp/-Bez.",
                     "value": "Netz +Einsp/-Bez."
                 },
@@ -2269,7 +2433,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "An Haus",
                     "value": "An Haus"
                 },
@@ -2288,7 +2452,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Stromk. Gesamt",
                     "value": "Stromk. Gesamt"
                 },
@@ -2307,7 +2471,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Tagesertrag",
                     "value": "Tagesertrag"
                 },
@@ -2326,7 +2490,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Verg\u00fctung Gesamt",
                     "value": "Verg\u00fctung Gesamt"
                 },
@@ -2345,7 +2509,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Monatsertrag",
                     "value": "Monatsertrag"
                 },
@@ -2364,7 +2528,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "PV Ertrag Total",
                     "value": "PV Ertrag Total"
                 },
@@ -2383,7 +2547,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Verlauf PV Leistung",
                     "value": "Verlauf PV Leistung"
                 },
@@ -2402,7 +2566,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "T\u00e4glicher PV Ertrag und Netzeinspeisung",
                     "value": "T\u00e4glicher PV Ertrag und Netzeinspeisung"
                 },
@@ -2421,7 +2585,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "PV Leistung gesamt",
                     "value": "PV Leistung gesamt"
                 },
@@ -2440,7 +2604,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "PV Feld S\u00fcd",
                     "value": "PV Feld S\u00fcd"
                 },
@@ -2459,7 +2623,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "PV Feld West 1",
                     "value": "PV Feld West 1"
                 },
@@ -2478,7 +2642,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "PV Feld West 2",
                     "value": "PV Feld West 2"
                 },
@@ -2497,7 +2661,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "PV Feld Ost",
                     "value": "PV Feld Ost"
                 },
@@ -2516,7 +2680,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "PV Leistung pro Tag",
                     "value": "PV Leistung pro Tag"
                 },
@@ -2535,7 +2699,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Netzeinspeisung",
                     "value": "Netzeinspeisung"
                 },
@@ -2554,7 +2718,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "St\u00fcndliche Stromkosten / Einspeiseverg\u00fctung",
                     "value": "St\u00fcndliche Stromkosten / Einspeiseverg\u00fctung"
                 },
@@ -2573,7 +2737,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Kosten",
                     "value": "Kosten"
                 },
@@ -2592,7 +2756,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Verg\u00fctung",
                     "value": "Verg\u00fctung"
                 },
@@ -2611,7 +2775,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "T\u00e4gliche Stromkosten / Einspeiseverg\u00fctung",
                     "value": "T\u00e4gliche Stromkosten / Einspeiseverg\u00fctung"
                 },
@@ -2630,7 +2794,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "Monatliche Stromkosten / Einspeiseverg\u00fctung",
                     "value": "Monatliche Stromkosten / Einspeiseverg\u00fctung"
                 },
@@ -2657,18 +2821,18 @@
                 "name": "ToGridTotal",
                 "options": [
                     {
-                        "selected": false,
+                        "selected": true,
                         "text": "Einspeisung Total",
                         "value": "Einspeisung Total"
                     }
                 ],
-                "query": "Einspeisung Summiert",
+                "query": "Einspeisung Total",
                 "skipUrlSync": false,
                 "type": "textbox"
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "-1m",
                     "value": "-1m"
                 },
@@ -2685,6 +2849,83 @@
                 "query": "-1m",
                 "skipUrlSync": false,
                 "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "Monatliche Batterieladungsstatistik (bgl. t\u00e4gl. Maxima)",
+                    "value": "Monatliche Batterieladungsstatistik (bgl. t\u00e4gl. Maxima)"
+                },
+                "description": "",
+                "hide": 2,
+                "name": "MonthlySOCStats",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Monatliche Batterieladungsstatistik (bgl. t\u00e4gl. Maxima)",
+                        "value": "Monatliche Batterieladungsstatistik (bgl. t\u00e4gl. Maxima)"
+                    }
+                ],
+                "query": "Monatliche Batterieladungsstatistik (bgl. t\u00e4gl. Maxima)",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "Median",
+                    "value": "Median"
+                },
+                "hide": 2,
+                "name": "MedianSOC",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Median",
+                        "value": "Median"
+                    }
+                ],
+                "query": "Median",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "Minimum",
+                    "value": "Minimum"
+                },
+                "hide": 2,
+                "name": "MinSOC",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Minimum",
+                        "value": "Minimum"
+                    }
+                ],
+                "query": "Minimum",
+                "skipUrlSync": false,
+                "type": "textbox"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "Maximum",
+                    "value": "Maximum"
+                },
+                "hide": 2,
+                "name": "MaxSOC",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "Maximum",
+                        "value": "Maximum"
+                    }
+                ],
+                "query": "Maximum",
+                "skipUrlSync": false,
+                "type": "textbox"
             }
         ]
     },
@@ -2694,8 +2935,8 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Solax PV Monitor Ger",
-    "uid": "MK7d_szIz",
-    "version": 19,
+    "title": "Solax PV Monitoring English",
+    "uid": "MK7d_szI2",
+    "version": 20,
     "weekStart": ""
 }
