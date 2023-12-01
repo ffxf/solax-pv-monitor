@@ -290,7 +290,7 @@ class Solax:
         # is computed from the main look sleep time, i.e. the query frequency
         check_period = list(range(ceil(self.settings['QUERY_FREQUENCY']/60)+1))
 
-        if now.hour == 0 and now.minute in check_period and not midnight_update_done:
+        if now.hour == 0 and now.minute in check_period and not self.midnight_update_done:
             # We are within the check period and the update hasn't been done yet ==>
             # Set a midnight metric to the current grid delivery total and store a back-up if it
             # in case metrics collection gets restarted at some point. We'll use the midnight
