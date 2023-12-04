@@ -2853,8 +2853,8 @@
             {
                 "current": {
                     "selected": false,
-                    "text": "Monatliche Batterieladungsstatistik (bgl. t\u00e4gl. Maxima)",
-                    "value": "Monatliche Batterieladungsstatistik (bgl. t\u00e4gl. Maxima)"
+                    "text": "Monatliche Batterieladungsstatistik (bzgl. t\u00e4gl. Maxima)",
+                    "value": "Monatliche Batterieladungsstatistik (bzgl. t\u00e4gl. Maxima)"
                 },
                 "description": "",
                 "hide": 2,
@@ -2862,11 +2862,11 @@
                 "options": [
                     {
                         "selected": true,
-                        "text": "Monatliche Batterieladungsstatistik (bgl. t\u00e4gl. Maxima)",
-                        "value": "Monatliche Batterieladungsstatistik (bgl. t\u00e4gl. Maxima)"
+                        "text": "Monatliche Batterieladungsstatistik (bzgl. t\u00e4gl. Maxima)",
+                        "value": "Monatliche Batterieladungsstatistik (bzgl. t\u00e4gl. Maxima)"
                     }
                 ],
-                "query": "Monatliche Batterieladungsstatistik (bgl. t\u00e4gl. Maxima)",
+                "query": "Monatliche Batterieladungsstatistik (bzgl. t\u00e4gl. Maxima)",
                 "skipUrlSync": false,
                 "type": "textbox"
             },
