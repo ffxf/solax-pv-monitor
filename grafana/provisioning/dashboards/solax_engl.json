@@ -2,7 +2,7 @@
     "__inputs": [
         {
             "name": "DS_INFLUXDB",
-            "label": "InfluxDB",
+            "label": "influxdb",
             "description": "",
             "type": "datasource",
             "pluginId": "influxdb",
@@ -71,7 +71,7 @@
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
     "id": null,
-    "iteration": 1699290997321,
+    "iteration": 1701361069162,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -567,7 +567,7 @@
                         "uid": "influxdb"
                     },
                     "hide": false,
-                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_today\")\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n",
+                    "query": "from(bucket: \"telegraf\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_today\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> aggregateWindow(every: 1d, fn: last, createEmpty: false)\n",
                     "refId": "A"
                 }
             ],
@@ -1116,7 +1116,7 @@
                         "type": "influxdb",
                         "uid": "influxdb"
                     },
-                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -7d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_today\" or r[\"_field\"] == \"to_grid_today\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: 1d, fn: mean, offset: ${TZ_OFFSET})\n\n",
+                    "query": "import \"timezone\"\n\noption location = timezone.location(name: \"Europe/Berlin\")\n\nfrom(bucket: \"telegraf\")\n  |> range(start: -7d)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telegraf_message\")\n  |> filter(fn: (r) => r[\"_field\"] == \"yield_today\" or r[\"_field\"] == \"to_grid_today\")\n  |> filter(fn: (r) => r[\"_value\"] > 0.0)\n  |> drop(columns: [\"host\"])\n  |> aggregateWindow(every: 1d, fn: last, offset: ${TZ_OFFSET})\n\n",
                     "refId": "A"
                 }
             ],
@@ -2853,8 +2853,8 @@
             {
                 "current": {
                     "selected": false,
-                    "text": "Monthly battery SOC stats (relative to daily maximums)",
-                    "value": "Monthly battery SOC stats (relative to daily maximums)"
+                    "text": "Monthly battery charce stats (relative to daily max values)",
+                    "value": "Monthly battery charce stats (relative to daily max values)",
                 },
                 "description": "",
                 "hide": 2,
@@ -2862,11 +2862,11 @@
                 "options": [
                     {
                         "selected": true,
-                        "text": "Monthly battery SOC stats (relative to daily maximums)",
-                        "value": "Monthly battery SOC stats (relative to daily maximums)"
+                        "text": "Monthly battery charce stats (relative to daily max values)",
+                        "value": "Monthly battery charce stats (relative to daily max values)",
                     }
                 ],
-                "query": "Monthly battery SOC stats (relative to daily maximums)",
+                "query": "Monthly battery charce stats (relative to daily max values)",
                 "skipUrlSync": false,
                 "type": "textbox"
             },
@@ -2935,8 +2935,8 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Solax PV Monitoring German",
-    "uid": "MK7d_szIz",
-    "version": 20,
+    "title": "Solax PV Monitoring Engl",
+    "uid": "MK7d_szI8",
+    "version": 2,
     "weekStart": ""
 }
