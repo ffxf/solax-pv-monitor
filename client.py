@@ -8,7 +8,7 @@
 # from the mqtt borker to telegraf to influxdb and then to grafana for dashboarding)
 #
 # To test, run with
-# docker run -it --rm --name cl -v "$PWD":/usr/src/myapp -v "$PWD":/solar -e CLIENT_TEST=1 -w /usr/src/myapp python-paho python3 cl.py
+# docker run -it --rm --name cl -v "$PWD":/usr/src/myapp -v "$PWD":/solar -e CLIENT_TEST=1 -w /usr/src/myapp python-paho python3 client.py
 
 from random import randint
 from requests import get as req_get, exceptions as req_exceptions

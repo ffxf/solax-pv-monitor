@@ -135,13 +135,13 @@ the language of the labels.""", \
         help="Label map output file. Gets overwritten if it exists.", default=map_file)
     parser.add_argument("-wd", "--write-dashb", help="Write dashboard file with mapped labels.", action="store_true")
     parser.add_argument("-fd", "--fix-datasource", help="Fix datasource uids in  dashboard file.", action="store_true")
-    parser.add_argument("-rm", "--read-map", help="Read and create map file from dashboard.", action="store_true")
+    parser.add_argument("-cm", "--create--map", help="Create map file from dashboard.", action="store_true")
 
     args = parser.parse_args()
 
-    if args.write_dashb and args.read_map:
+    if args.write_dashb and args.create_map:
         print("""
-reating a map file from a dashboard and modifying that dashboard with the map file doesn't make sense. Quitting.""")
+Creating a map file from a dashboard and modifying that dashboard with the map file doesn't make sense. Quitting.""")
         exit(1)
 
     return args
@@ -155,7 +155,7 @@ def run():
 
     Dashb = Dashboard(dashb_outfile=args.dashb_out, dashb_infile=args.dashb_in)
 
-    if args.read_map:
+    if args.create_map:
         Map.get_map_from_dashboard(Dashb.read_dashb())
         return
 
