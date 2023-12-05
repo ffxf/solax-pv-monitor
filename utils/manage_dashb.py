@@ -135,7 +135,7 @@ the language of the labels.""", \
         help="Label map output file. Gets overwritten if it exists.", default=map_file)
     parser.add_argument("-wd", "--write-dashb", help="Write dashboard file with mapped labels.", action="store_true")
     parser.add_argument("-fd", "--fix-datasource", help="Fix datasource uids in  dashboard file.", action="store_true")
-    parser.add_argument("-cm", "--create--map", help="Create map file from dashboard.", action="store_true")
+    parser.add_argument("-cm", "--create-map", help="Create map file from dashboard.", action="store_true")
 
     args = parser.parse_args()
 

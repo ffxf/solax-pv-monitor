@@ -31,14 +31,15 @@ Supply the `-h` or `--help` option to see usage information.
 The typical workflow is as follows
 
 1. Export a modified dashboard from Grafana using the "Export for sharing externally" option and save it to file
-2. Extract a mapping file for the variables used in the dashboard. Use the `-dbi`, `-mapfo` and `-rm` option for this
+2. Extract a mapping file for the variables used in the dashboard. Use the `-dbi`, `-mapfo` and `-cm` option for this
 3. Modify the mapping file as needed, e.g., translate the text labels into another languate
 4. Create a new dashboard file using the mapping file. Use the `-dbi`, `-dbo`, `-mapfi`, and `-wd` for this
 5. Fix the datasource definitions in the dashboard file that just got created. There is an issue preventing files to get provisioned directly if not doing this. Use the `-dbi`, `-dbo`, and `-fd` options for it
 
 If you not intended to do text label translations or other changes then you can skip steps 2 - 4.
 
-It is possible to use the same name for dashbaord file input and output name (options `-dbi` and `-dbo`).
+It is possible to use the same name for dashbaord file input and output name (options `-dbi` and
+`-dbo`), thus overwritting the file.
 
 ## Backup and Restore Script
 
