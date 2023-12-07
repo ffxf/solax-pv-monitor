@@ -2933,7 +2933,7 @@
                     "text": "60.0",
                     "value": "60.0"
                 },
-                "hide": 0,
+                "hide": 2,
                 "name": "QueryFrequency",
                 "options": [
                     {
