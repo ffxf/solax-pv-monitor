@@ -5,7 +5,11 @@ TOPIC = "telegraf/solar"
 BACKUP_FILE = "/solar/cl_backup.json"
 URL = "https://www.solaxcloud.com/proxyApp/proxy/api/getRealtimeInfo.do"
 TOKEN = <Solax API token. Get from Solaxcloud. Put in quotes, e.g. "123">
-QUERY_FREQUENCY = 60
+# QUERY_FREQUENCY should only be changed before you start up the monitoring system. The data
+# sample frequency set here will need to be taken into consideration in the dashboard queries and
+# cannot be changed dynamically at this point. If you change it thter later then the dashboard
+# will show miscalculated data
+QUERY_FREQUENCY = 40
 
 [inverter_sns]
 sn1 = <Inverter serial number. Check network dongle on inverter. E.g. "SYLASDWFG">

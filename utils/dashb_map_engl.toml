@@ -29,7 +29,7 @@
 "DailyCostGain" = "Daily Grid Costs / To Grid Gains"
 "MonthlyCostGain" = "Monthly Grid Costs / To Grid Gains"
 "ToGridTotal" = "To Grid Total"
-"MonthlySOCStats" = "Monthly battery charce stats (relative to daily max values)"
+"MonthlySOCStats" = "Monthly battery charge stats (relative to daily max values)"
 "MedianSOC" = "Median"
 "MinSOC" = "Minimum"
 "MaxSOC" = "Maximum"

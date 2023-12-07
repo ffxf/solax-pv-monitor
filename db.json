@@ -2930,19 +2930,19 @@
             {
                 "current": {
                     "selected": false,
-                    "text": "60.0",
-                    "value": "60.0"
+                    "text": "40.0",
+                    "value": "40.0"
                 },
                 "hide": 0,
                 "name": "QueryFrequency",
                 "options": [
                     {
                         "selected": true,
-                        "text": "60.0",
-                        "value": "60.0"
+                        "text": "40.0",
+                        "value": "40.0"
                     }
                 ],
-                "query": "60.0",
+                "query": "40.0",
                 "skipUrlSync": false,
                 "type": "textbox"
             }

@@ -21,6 +21,8 @@ from shutil import move
 dashb_infile = "dashboard.json"
 dashb_outfile = "dashb_out.json"
 map_file = "dashb_map.toml"
+client_env = ".client-env"
+QUERY_FREQ_LABEL = "QueryFrequency"
 
 
 class LabelMap():
@@ -118,6 +120,35 @@ class Dashboard():
 
         self._safe_write(dashboard)
 
+    def set_query_freq(self):
+        # Set the QueryFrequency variable in a dashboard file to the value configured in the
+        # .client_env config file
+
+        # Query frequency variable is used for calculations in dashboard to need to append .0
+        query_freq = str(self._get_query_freq()) + ".0"
+
+        dashboard = self.read_dashb()
+
+        for rec in dashboard['templating']['list']:
+            nm = rec['name']
+            if nm == QUERY_FREQ_LABEL:
+                rec['current']['text'] = query_freq
+                rec['current']['value'] = query_freq
+                rec['options'][0]['text'] = query_freq
+                rec['options'][0]['value'] = query_freq
+                rec['query'] = query_freq
+
+        self._safe_write(dashboard)
+
+        print(f"{QUERY_FREQ_LABEL} has been set to {query_freq} in {self.dashb_outfile}.")
+
+    def _get_query_freq(self):
+        # Get the query frequency from the .client_env config file
+        with open(client_env, "rb") as f:
+            cl_env = toml_load(f)
+        return cl_env['settings']['QUERY_FREQUENCY']
+
+
 
 def get_args():
     # CLI arguments. Use the -h or --help option for usage
@@ -136,6 +167,7 @@ the language of the labels.""", \
     parser.add_argument("-wd", "--write-dashb", help="Write dashboard file with mapped labels.", action="store_true")
     parser.add_argument("-fd", "--fix-datasource", help="Fix datasource uids in  dashboard file.", action="store_true")
     parser.add_argument("-cm", "--create-map", help="Create map file from dashboard.", action="store_true")
+    parser.add_argument("-qf", "--query-freq", help="Set query frequency.", action="store_true")
 
     args = parser.parse_args()
 
@@ -166,6 +198,10 @@ def run():
 
     if args.fix_datasource:
         Dashb.fix_datasource()
+        return
+
+    if args.query_freq:
+        Dashb.set_query_freq()
         return
 
     print(" Need to specificy one of --write-dashb or --read-map. Quitting.")

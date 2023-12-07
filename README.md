@@ -24,45 +24,53 @@ Deployment is simplified via [Docker](https://docs.docker.com/engine/install/) a
 
 # Installation
 
+## Prerequisites
+
 So far this monitoring system has been tested only under Linux and macOS. Your mileage may vary if you use another platform.
 
 You should also have knowledge of how to navigate directories and how to modify files on the OS platform you use. Basic knowledge of Docker is advantageous.
 
 You will need docker and docker-compose installed as a prerequsite. If not available already on the system where you want to run the monitoring services then get Docker from [here](https://www.docker.com/get-started/). It should be feasible to run this also with [podman](https://podman.io/) and [podman-compose](https://docs.podman.io/en/latest/markdown/podman-compose.1.html) but this has not been tested as of yet.
 
-Now clone the project
+## Get the package
+
+Clone the project
 
 ```bash
 git clone https://github.com/ffxf/solax-pv-monitor.git
 ```
 
-Navigate to the project directory
+and navigate to the project directory
 
 ```bash
 cd solax-pv-monitor
 ```
 
-Change the environment variables defined in `.env` that are used to setup and deploy the stack. For a first test you should be able to leave the values in `.env` as they are, though. For deploying permanently you will at least want to adjust modify the password and token settings, though (see the corresponding comments in the file itself).
+## Modify `.env`
+
+Change the environment variables defined in `.env` that are used to setup and deploy the stack. For a first test you should be able to leave the values in `.env` as they are, though. For deploying permanently you will at least want to modify the password and token settings, though (see the corresponding comments in the file itself).
 
 ```bash
 ├── telegraf/
 ├── .env                <---
 ├── .client_env
 ├── .inverter_line_map
-├── docker-compose.yml
-├── entrypoint.sh
+├── LICENCE
+├── README.md
 └── ...
 ```
 
-Also change some settings highlighted in `.client_env` to configure the Solax API client connectivity. You will need to get a Solax API token from [Solaxcloud](https://www.solaxcloud.com/green/#/api) for your PV system for this. See the [Solax API documentation](https://www.solaxcloud.com/green/user_api/SolaxCloud_User_Monitoring_API_V6.1.pdf) for more information.
+## Modify `.client_env`
+
+Change some settings highlighted in `.client_env` to configure the Solax API client connectivity. You will need to get a Solax API token from [Solaxcloud](https://www.solaxcloud.com/green/#/api) for your PV system for this. See the [Solax API documentation](https://www.solaxcloud.com/green/user_api/SolaxCloud_User_Monitoring_API_V6.1.pdf) for more information.
  
 ```bash
 ├── telegraf/
 ├── .env
 ├── .client_env         <---
 ├── .inverter_line_map
-├── docker-compose.yml
-├── entrypoint.sh
+├── LICENCE
+├── README.md
 └── ...
 ```
 
@@ -97,6 +105,21 @@ sn1 = "SYLASDWFG"
 sn2 = "SYPSKFHSR"
 ```
 
+Should you elect to change the line 
+
+```bash
+QUERY_FREQUENCY = 60
+```
+then run
+
+```bash
+utils/set_query_freq.sh
+```
+
+right after to made that change. You can skip this step if you do not change that setting.
+
+## Modify `.inverter_line_map`
+
 Finally, modify the lines in `.inverter_line_map` to point to your Solax inverters and how you want the PV panel lines be respresented (if you have more than one you might want to label them by location, e.g., "South", "West", "East", etc).
 
 ```bash
@@ -104,8 +127,8 @@ Finally, modify the lines in `.inverter_line_map` to point to your Solax inverte
 ├── .env
 ├── .client_env
 ├── .inverter_line_map  <---
-├── docker-compose.yml
-├── entrypoint.sh
+├── LICENCE
+├── README.md
 └── ...
 ```
 
@@ -117,6 +140,8 @@ SYLASDWFG:powerdc2:W1
 SYPSKFHSR:powerdc1:W2
 SYPSKFHSR:powerdc2:E
 ```
+
+## Starting up
 
 Now start the services
 ```bash
@@ -139,6 +164,31 @@ If you do not see a dashboard you can select one from the Grafana home screen or
 
 [**Python-Paho**](https://hub.docker.com/r/ff114084/python-paho) / `latest`
 
+# Shutting Down and Restarting
+
+## Shutting Down
+
+To shutdown the Solax PV Monitoring System follow the folloing command sequence:
+
+```bash
+touch do_client_ckpt
+```
+
+Wait for at least a minute. You can also check for whether the file `do_client_ckpt` is still there. If not then a checkpoint was executed and you can do the next step:
+
+```bash
+docker_compose down
+```
+
+This will typically take less than half a minute and it shows when it is done
+
+## Restarting
+
+To restart the services you do the same as when you started the monitoring system initially:
+
+```bash
+docker-compose up -d
+```
 
 # Troubleshooting
 

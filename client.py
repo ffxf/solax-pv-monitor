@@ -20,6 +20,8 @@ from shutil import move
 from tempfile import mktemp
 from tomllib import load as toml_load
 from os import getenv
+from os import remove as file_remove
+from os.path import isfile
 from paho.mqtt import client as mqtt_client
 from math import ceil
 
@@ -30,6 +32,11 @@ client_id = f'publish-{randint(0, 1000)}'
 env_file = ".client-env"
 # File for mapping inverter serial no's and power lines to names, e.g. <inverter_sn> and 'powerdc1' to 'south'
 inverter_line_file = ".inverter_line_map"
+
+# File indicating that a checkpoint for 'to_grid_midnight' data should be done. If file exists a
+# checkpoint will be done and the file will get removed again.
+# This will typically be done before you shutown the client to have the previous data upon restart
+ckpt_file = "do_client_ckpt"
 
 # Get the map of inverter lines to metric names from file. The files has the syntax
 #     <inverter_sn>:<line>:<metric name>
@@ -335,6 +342,15 @@ class Solax:
         # Reset self.midnight_update_done
         if now.hour == 0 and now.minute in after_check and self.midnight_update_done:
             self.midnight_update_done = False
+        
+        if isfile(ckpt_file):
+            persisted_data = { 'to_grid_midnight' : self.to_grid_midnight, 'date': today }
+            self.bkup.save_backup(persisted_data)
+            print('Data checkpointed on demand:', persisted_data)
+            try:
+                file_remove(ckpt_file)
+            except:
+                pass
 
         
 # Main function
