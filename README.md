@@ -244,7 +244,6 @@ Here is a list of some of the things to be done:
 * Add more documentation, e.g. a better troubleshooting section
 * Test on Windows (get it to work there)
 * Test on a RaspberryPi (get it to work there)
-* Reorganize the source code into some subdirectories
 * Refine and optimize the dashboard (not much expertise with fluxlang and Grafana was available when creating this dashboard)
 * Could also look into getting it to work on top of Kubernetes, e.g. using K3s
 
