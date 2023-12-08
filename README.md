@@ -116,7 +116,7 @@ then run
 utils/set_query_freq.sh
 ```
 
-right after to made that change. You can skip this step if you do not change that setting.
+right after to make that change. You can skip this step if you do not change that setting.
 
 ## Modify `.inverter_line_map`
 
@@ -151,6 +151,27 @@ docker-compose up -d
 and point your browser to `<ip-of-your-server>:3210` and log into Grafana, initially using the default user name `amin` and password `admin`. You should see a dashboard now with **NO DATA** in its tiles. Wait for something like a minute (for the first data update) and data should show up in the dashboard.
 
 If you do not see a dashboard you can select one from the Grafana home screen or you can search for a dashboard by clicking on the magnifying icon on the left margin navigation bar.
+
+## After the Installation
+
+You will want to adjust the electricity cost and gain settings in the dashboard to the rates you have with your electricity provider. For this click on the "cog wheel" icon at the top
+
+![](images/dashboard-config.png)
+
+and then on
+
+![](images/variables-config.png)
+
+on the left. In variable list that opens click on `Cost` and `Gain`(if you have to make changes).
+
+![](images/cost-gain.png)
+
+In the configuration dialog for each of them then modify the `Default value` field and click on `Update`. 
+
+![](images/cost-update.png)
+
+For the value entered be sure you always use floating point notation with the decimals seperated with a period. I.e. even your cost were 1 currency unit you should enter it as 1.0.
+
 
 # Docker Images Used (Official & Verified)
 
