@@ -41,6 +41,30 @@ If you not intended to do text label translations or other changes then you can 
 It is possible to use the same name for dashbaord file input and output name (options `-dbi` and
 `-dbo`), thus overwritting the file.
 
+## Set Query Frequency Script
+
+This script sets the value for the `QueryFrequency` variable in the dashboards configuration files
+(the JSON files in `grafana/provisioning/dashboards`). **It should only be used during initial
+installation and if the `QUERY_FREQUENCY` parameter in the `.client_env` file has been modified.** 
+
+The query frequency, i.e. the rate at which Solax monitoring data is reported to the Influx
+database, should always be the same and it has to be in sync with some of the query calaculations
+in the dashboards. Changing it later would render "old" metrics having been collected with the previous frequency and new metrics with the changed one. The calculations for the previous
+metric reports will then be wrong if the dashboards got updated too or they will be wrong for newer
+reports if dashbaords didn't get updated.
+
+If changing the frequency, then just run the script as follows:
+
+```bash
+utilities/set_query_freq.sh
+```
+
+The script will use the [Dashboard Management Utility](#user-content-dasboard-management-utility), i.e. the
+script `utilities/manage_dashb.py` with it's `--query-freq` (`-qf`) option. It will loop through
+any dashbaord files in `grafana/provisioning/dashboards` and change each of them using what has
+been configured for `QUERY_FREQUENCY` in `.client_env` (so be sure to set this to the correct
+value before you run the script).
+
 ## Backup and Restore Script
 
 ### Description
