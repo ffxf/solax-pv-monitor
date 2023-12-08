@@ -59,7 +59,7 @@ If changing the frequency, then just run the script as follows:
 utilities/set_query_freq.sh
 ```
 
-The script will use the [Dashboard Management Utility](#dasboard-management-utility), i.e. the
+The script will use the [Dashboard Management Utility](#dashboard-management-utility), i.e. the
 script `utilities/manage_dashb.py` with it's `--query-freq` (`-qf`) option. It will loop through
 any dashbaord files in `grafana/provisioning/dashboards` and change each of them using what has
 been configured for `QUERY_FREQUENCY` in `.client_env` (so be sure to set this to the correct
