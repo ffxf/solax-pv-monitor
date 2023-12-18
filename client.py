@@ -207,7 +207,7 @@ class Solax:
                 if result_dict is not None:
                     if self.test:
                         print(result_dict)
-                    if 'result' in result_dict and
+                    if 'result' in result_dict and \
                         'inverterType' in result_dict['result'] and 'inverterStatus' in result_dict['result']:
                         # Parse and compile data and store metric values in self.stats
                         self.parse_api_data(result_dict['result'], sn)
