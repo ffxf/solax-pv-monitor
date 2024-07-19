@@ -204,35 +204,41 @@ class Solax:
                 params = {'tokenId': self.settings['TOKEN'], 'sn': sn}
                 result_dict = make_get_request(self.settings['URL'], params=params, headers=headers)
 
-                if result_dict is not None:
-                    if self.test:
-                        print(result_dict)
-                    if 'result' in result_dict and \
-                        'inverterType' in result_dict['result'] and 'inverterStatus' in result_dict['result']:
-                        # Parse and compile data and store metric values in self.stats
-                        self.parse_api_data(result_dict['result'], sn)
-                else:
-                    print("GET request failed.")
+                
+                if self.test:
+                    print(result_dict)
+                
+                # The data coming back from the Solax API is sometimes incomplete. Some of the 
+                # dictionaries access in the below parsing function are empty or are missing data.
+                # In that case, sleep and retry.
+                try:
+                    self.parse_api_data(result_dict['result'], sn)
+                except:
+                    sleep(self.settings['QUERY_FREQUENCY'])
+                    break
 
-            # Power to grid today is not something delivered by the API. The function tries to
-            # compile it
-            self.set_to_grid_today()
-
-            # Trying to compile power delivered to wallbox. Doesn't work the way it is done here,
-            # unfortunately. The Solax app has this information and seems to get it from the
-            # wallbox directly but there doesn't seem to be an API for that
-            self.stats.to_house = self.stats.ac_power - self.stats.to_grid
-            self.stats.to_wallbox = self.stats.sol_pwr - self.stats.to_bat - self.stats.to_house
-            if self.stats.to_wallbox < 0.0:
-                self.stats.to_wallbox = 0.0
-
-            if self.test:
-                self.stats.show()
+            # Only execute this part if we didn't break out of the for loop, i.e. if we were able
+            # to properly parse the API data
             else:
-                # Publish the metrics data to the mqtt broker
-                self.stats.publish(lambda k, v: self.mqtt.publish(self.settings['TOPIC'], k, v))
+                # Power to grid today is not something delivered by the API. The function tries to
+                # compile it
+                self.set_to_grid_today()
 
-            sleep(self.settings['QUERY_FREQUENCY'])
+                # Trying to compile power delivered to wallbox. Doesn't work the way it is done here,
+                # unfortunately. The Solax app has this information and seems to get it from the
+                # wallbox directly but there doesn't seem to be an API for that
+                self.stats.to_house = self.stats.ac_power - self.stats.to_grid
+                self.stats.to_wallbox = self.stats.sol_pwr - self.stats.to_bat - self.stats.to_house
+                if self.stats.to_wallbox < 0.0:
+                    self.stats.to_wallbox = 0.0
+
+                if self.test:
+                    self.stats.show()
+                else:
+                    # Publish the metrics data to the mqtt broker
+                    self.stats.publish(lambda k, v: self.mqtt.publish(self.settings['TOPIC'], k, v))
+
+                sleep(self.settings['QUERY_FREQUENCY'])
 
     # Parses the data we get from the Solax API, compiles some derived matrics and stores the data
     # in self.stats
