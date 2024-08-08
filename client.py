@@ -64,6 +64,12 @@ def make_get_request(url, params=None, headers=None):
         # Assuming the response contains JSON data, we will parse it into a dictionary
         response_json = response.json()
 
+        # There are cases where the API has repeated issues and then denys responses for
+        # an hour. Handle that case by sleeping an hour
+        if 'exception' in response_json and \
+           response_json['exception'].startswith('There have been several violations'):
+            sleep(3601)
+
         return response_json
 
     except req_exceptions.RequestException as e:
@@ -204,6 +210,12 @@ class Solax:
                 params = {'tokenId': self.settings['TOKEN'], 'sn': sn}
                 result_dict = make_get_request(self.settings['URL'], params=params, headers=headers)
 
+                # Meanwhile the Solax API appears to be permitting only one query per minute, although
+                # this is documented differently. Andy each request against a inverter counts as a
+                # query, so if you have multiple inverters you have to pause in between querying
+                # them. Also be sure that QUERY_FREQUENCY is at least set to 1 min.
+                sleep(self.settings['QUERY_FREQUENCY'])
+
                 
                 if self.test:
                     print(result_dict)
@@ -237,8 +249,6 @@ class Solax:
                 else:
                     # Publish the metrics data to the mqtt broker
                     self.stats.publish(lambda k, v: self.mqtt.publish(self.settings['TOPIC'], k, v))
-
-                sleep(self.settings['QUERY_FREQUENCY'])
 
     # Parses the data we get from the Solax API, compiles some derived matrics and stores the data
     # in self.stats
